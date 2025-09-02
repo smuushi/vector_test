@@ -1,0 +1,29 @@
+[api]
+enabled = true
+address = "0.0.0.0:8686"
+
+# Data directory for Vector
+data_dir = "/tmp/vector"
+
+# Get metrics from your Railway service
+[sources.railway_metrics]
+type = "prometheus_scrape"
+endpoints = ["https://check-server-metrics.up.railway.app/metrics"]
+scrape_interval_secs = 30
+scrape_timeout_secs = 10
+
+# Authentication for your metrics endpoint
+[sources.railway_metrics.auth]
+strategy = "bearer"
+token = "${METRICS_BEARER_TOKEN}"
+
+# Send metrics to Better Stack
+[sinks.betterstack]
+type = "prometheus_remote_write"
+inputs = ["railway_metrics"]
+endpoint = "https://s1500454.us-east-9.betterstackdata.com"
+
+# Authentication for Better Stack
+[sinks.betterstack.auth]
+strategy = "bearer"
+token = "${BETTERSTACK_TOKEN}"
