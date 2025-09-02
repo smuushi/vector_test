@@ -1,0 +1,23 @@
+[build]
+builder = "dockerfile"
+
+[deploy]
+startCommand = "vector --config /etc/vector/vector.toml"
+healthcheckPath = "/api/v1/health"
+healthcheckTimeout = 30
+restartPolicyType = "on-failure"
+
+[deploy.httpService]
+port = 8686
+
+[[deploy.environmentVariables]]
+name = "METRICS_BEARER_TOKEN"
+value = "${{METRICS_BEARER_TOKEN}}"
+
+[[deploy.environmentVariables]]
+name = "BETTERSTACK_TOKEN" 
+value = "${{BETTERSTACK_TOKEN}}"
+
+[[deploy.environmentVariables]]
+name = "VECTOR_LOG"
+value = "info"
